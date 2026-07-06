@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="dashboard-shell">
+    <div class="dashboard-card">
+        {% if user.role == 'client' %}
+        <h2>{{ 'ما الذي تبحث عنه؟' if lang == 'ar' else 'What are you looking for?' }}</h2>
+        <form method="post">
+            <textarea name="looking_for" placeholder="{{ 'اكتب ما تحتاجه...' if lang == 'ar' else 'Tell us what you need...' }}">{{ user_interest or '' }}</textarea>
+            <button class="btn btn-primary" type="submit">{{ 'حفظ' if lang == 'ar' else 'Save' }}</button>
+        </form>
+        {% else %}
+        <h2>{{ 'نشر خدمة جديدة' if lang == 'ar' else 'Post a new service' }}</h2>
+        <form method="post">
+            <input type="text" name="title" placeholder="{{ 'عنوان الخدمة' if lang == 'ar' else 'Service title' }}" required>
+            <textarea name="description" placeholder="{{ 'وصف الخدمة' if lang == 'ar' else 'Service description' }}" required></textarea>
+            <input type="text" name="category" placeholder="{{ 'الفئة' if lang == 'ar' else 'Category' }}" required>
+            <input type="text" name="budget" placeholder="{{ 'الميزانية أو السعر' if lang == 'ar' else 'Budget or price' }}">
+            <button class="btn btn-primary" type="submit">{{ 'نشر الخدمة' if lang == 'ar' else 'Publish service' }}</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <div class="dashboard-card">
+        <h3>{{ 'الخدمات المتاحة' if lang == 'ar' else 'Available services' }}</h3>
+        {% for job in jobs %}
+        <div class="request-item service-card">
+            <div>
+                <strong>{{ job.title }}</strong>
+                <p>{{ job.description }}</p>
+                <small>{{ job.category }} · {{ job.budget or 'TBD' }} · {{ job.full_name or job.username }}</small>
+            </div>
+            <a class="btn btn-light" href="{{ url_for('views.job_detail', job_id=job.id) }}">{{ 'المزيد من التفاصيل' if lang == 'ar' else 'More details' }}</a>
+        </div>
+        {% else %}
+        <p>{{ 'لا توجد خدمات بعد.' if lang == 'ar' else 'No services yet.' }}</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

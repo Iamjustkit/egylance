@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="form-shell">
+    <form class="auth-card" method="post">
+        <h2>{{ 'إنشاء حساب' if lang == 'ar' else 'Create account' }}</h2>
+        <label>{{ 'الاسم الكامل' if lang == 'ar' else 'Full name' }}</label>
+        <input type="text" name="full_name">
+        <label>{{ 'اسم المستخدم' if lang == 'ar' else 'Username' }}</label>
+        <input type="text" name="username" required>
+        <label>{{ 'البريد الإلكتروني' if lang == 'ar' else 'Email' }}</label>
+        <input type="email" name="email" required>
+        <label>{{ 'نوع الحساب' if lang == 'ar' else 'Account type' }}</label>
+        <select name="role">
+            <option value="freelancer">{{ 'مستقل' if lang == 'ar' else 'Freelancer' }}</option>
+            <option value="client">{{ 'عميل' if lang == 'ar' else 'Client' }}</option>
+        </select>
+        <label>{{ 'كلمة المرور' if lang == 'ar' else 'Password' }}</label>
+        <input type="password" name="password" required>
+        <label class="checkbox-row">
+            <input type="checkbox" name="accept_terms" value="on">
+            <span>{{ 'أوافق على سياسة الخصوصية والشروط' if lang == 'ar' else 'I agree to the privacy policy and terms of service' }}</span>
+        </label>
+        <p class="muted"><a href="{{ url_for('views.privacy_policy') }}">{{ 'اقرأ سياسة الخصوصية' if lang == 'ar' else 'Read privacy policy' }}</a> · <a href="{{ url_for('views.terms') }}">{{ 'اقرأ شروط الاستخدام' if lang == 'ar' else 'Read terms of service' }}</a></p>
+        <button type="submit" class="btn btn-primary">{{ 'إنشاء الحساب' if lang == 'ar' else 'Create account' }}</button>
+        <a class="btn btn-light" href="/auth/google">{{ 'التسجيل عبر Google' if lang == 'ar' else 'Sign up with Google' }}</a>
+    </form>
+</section>
+{% endblock %}

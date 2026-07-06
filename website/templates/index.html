@@ -1,0 +1,105 @@
+{% extends 'layout.html' %}
+{% block content %}
+<main>
+    <section class="hero-content">
+        <div class="hero-copy">
+            <span class="pill">{{ translations.trust }}</span>
+            <h1>{{ translations.hero_title }}</h1>
+            <p>{{ translations.hero_subtitle }}</p>
+            <form class="hero-search" action="{{ url_for('views.search') }}" method="get">
+                <input type="text" name="q" placeholder="{{ translations.search_placeholder }}">
+                <button type="submit">{{ translations.start_now }}</button>
+            </form>
+            <div class="hero-badges">
+                <span>✓ {{ 'دفع آمن' if lang == 'ar' else 'Secure payments' }}</span>
+                <span>✓ {{ 'تحقق الهوية' if lang == 'ar' else 'Identity verification' }}</span>
+                <span>✓ {{ 'دعم ثنائي اللغة' if lang == 'ar' else 'Bilingual support' }}</span>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="card-top">
+                <h3>{{ 'أفضل المواهب اليوم' if lang == 'ar' else 'Top talents today' }}</h3>
+                <span class="verified">{{ translations.verified }}</span>
+            </div>
+            <ul>
+                {% for profile in featured_profiles %}
+                <li>
+                    <strong>{{ profile.full_name or profile.username }}</strong>
+                    <span>{{ profile.headline_ar if lang == 'ar' else profile.headline_en }}</span>
+                </li>
+                {% else %}
+                <li><strong>{{ 'لا توجد مواهب مميزة بعد' if lang == 'ar' else 'No featured talents yet' }}</strong></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <section class="trust-strip">
+        <div><strong>+1500</strong><span>{{ 'مشروع مكتمل' if lang == 'ar' else 'Completed projects' }}</span></div>
+        <div><strong>4.9/5</strong><span>{{ 'متوسط التقييم' if lang == 'ar' else 'Average rating' }}</span></div>
+        <div><strong>100%</strong><span>{{ 'أمان الدفع' if lang == 'ar' else 'Secure payments' }}</span></div>
+        <div><strong>24/7</strong><span>{{ 'دعم' if lang == 'ar' else 'Support' }}</span></div>
+    </section>
+
+    <section id="services" class="section">
+        <div class="section-heading">
+            <span class="pill">{{ 'خدمات شائعة' if lang == 'ar' else 'Popular services' }}</span>
+            <h2>{{ 'اختر من بين آلاف الخدمات' if lang == 'ar' else 'Browse thousands of services' }}</h2>
+        </div>
+        <div class="cards">
+            {% for card in services %}
+            <article class="info-card">
+                <h3>{{ card.title_ar if lang == 'ar' else card.title_en }}</h3>
+                <p>{{ card.body_ar if lang == 'ar' else card.body_en }}</p>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="why" class="section alt-bg">
+        <div class="section-heading">
+            <span class="pill">{{ 'لماذا إيجيلانس' if lang == 'ar' else 'Why EgyLance' }}</span>
+            <h2>{{ 'منصة مصممة لبناء ثقة أكبر' if lang == 'ar' else 'A platform built for trust, speed, and quality' }}</h2>
+        </div>
+        <div class="feature-grid">
+            {% for card in why_cards %}
+            <div class="feature-box">
+                <h3>{{ card.title_ar if lang == 'ar' else card.title_en }}</h3>
+                <p>{{ card.body_ar if lang == 'ar' else card.body_en }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="how" class="section">
+        <div class="section-heading">
+            <span class="pill">{{ 'كيف تعمل' if lang == 'ar' else 'How it works' }}</span>
+            <h2>{{ 'ابدأ في دقائق قليلة' if lang == 'ar' else 'Start in minutes' }}</h2>
+        </div>
+        <div class="steps">
+            <div class="step-card"><span>1</span><h3>{{ 'أنشئ حسابك' if lang == 'ar' else 'Create an account' }}</h3><p>{{ 'سجل كعميل أو مستقل وأكمل ملفك الشخصي.' if lang == 'ar' else 'Sign up as a client or a freelancer and complete your profile.' }}</p></div>
+            <div class="step-card"><span>2</span><h3>{{ 'ابحث أو قدم عرضًا' if lang == 'ar' else 'Browse or send offers' }}</h3><p>{{ 'اكتشف المشاريع أو أرسل عرضًا احترافيًا.' if lang == 'ar' else 'Find the right project or send a tailored offer.' }}</p></div>
+            <div class="step-card"><span>3</span><h3>{{ 'ابدأ العمل الآمن' if lang == 'ar' else 'Work safely' }}</h3><p>{{ 'تواصل مع العميل وبادر بالعمل عبر نظام آمن.' if lang == 'ar' else 'Communicate, collaborate, and get paid through a protected workflow.' }}</p></div>
+        </div>
+    </section>
+
+    <section id="talents" class="section alt-bg">
+        <div class="section-heading">
+            <span class="pill">{{ 'مستقلون مميزون' if lang == 'ar' else 'Featured freelancers' }}</span>
+            <h2>{{ 'مواهب مُؤهلة جاهزة للبدء' if lang == 'ar' else 'Qualified talent ready to start' }}</h2>
+        </div>
+        <div class="talent-list">
+            {% for profile in featured_profiles %}
+            <div class="talent-card">
+                <div class="talent-head">
+                    <h3>{{ profile.full_name or profile.username }}</h3>
+                    <span class="verified">{{ 'موثق' if profile.is_verified else 'مميز' }}</span>
+                </div>
+                <p>{{ profile.bio_ar if lang == 'ar' else profile.bio_en }}</p>
+                <small>{{ profile.city or 'Egypt' }}</small>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}

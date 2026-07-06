@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="policy-shell">
+    <div class="policy-card">
+        <h2>{{ 'شروط الخدمة' if lang == 'ar' else 'Terms of Service' }}</h2>
+        <p>{{ 'تضع هذه الشروط إطارًا لاستخدامك لمنصة إيجيلانس. باستخدامك للمنصة فأنت توافق على الالتزام بها، سواء كنت عميلًا أو مستقلًا أو مسؤولًا عن حساب.' if lang == 'ar' else 'These terms establish the framework for your use of the EgyLance platform. By using the platform, you agree to comply with them, whether you are a client, freelancer, or account administrator.' }}</p>
+        <h3>{{ '1. استخدام المنصة' if lang == 'ar' else '1. Use of the Platform' }}</h3>
+        <p>{{ 'يُمنع نشر محتوى غير قانوني أو مضلل أو مسيء أو ينتهك حقوق الغير. يجب المحافظة على التفاعل المهني واحترام الآخرين. نحتفظ بالحق في تعليق أو إيقاف الحسابات التي تنتهك هذه القواعد.' if lang == 'ar' else 'You may not publish illegal, misleading, abusive, or infringing content. You must maintain professional interaction and respect others. We reserve the right to suspend or remove accounts that violate these rules.' }}</p>
+        <h3>{{ '2. الحسابات والهوية' if lang == 'ar' else '2. Accounts and Identity' }}</h3>
+        <p>{{ 'المستخدم مسؤول عن سرية بيانات حسابه، ويجب تقديم معلومات دقيقة عند التسجيل. قد يُطلب منك تأكيد هويتك قبل نشر خدمات أو التعامل مع مستخدمين آخرين.' if lang == 'ar' else 'You are responsible for the confidentiality of your account information and must provide accurate details when registering. You may be asked to verify your identity before posting services or transacting with others.' }}</p>
+        <h3>{{ '3. الخدمات والعروض' if lang == 'ar' else '3. Services and Offers' }}</h3>
+        <p>{{ 'أي خدمة أو عرض تنشره على المنصة يجب أن يكون صحيحًا ومفصلًا. لا يجوز تقديم خدمات غير قانونية أو غير أخلاقية أو تتعلق بأنشطة محظورة.' if lang == 'ar' else 'Any service or offer you publish on the platform must be accurate and detailed. You may not offer illegal, unethical, or prohibited services.' }}</p>
+        <h3>{{ '4. المسؤولية' if lang == 'ar' else '4. Limitation of Liability' }}</h3>
+        <p>{{ 'إيجيلانس ليست طرفًا مباشرًا في التعاقد بين العميل والمستقل، لكنها توفر البنية التحتية والتوثيق والدعم. لا نتحمل المسؤولية عن الخسائر غير المباشرة الناتجة عن التفاهمات أو النزاعات بين المستخدمين.' if lang == 'ar' else 'EgyLance is not a direct party to the contract between client and freelancer, but it provides the infrastructure, documentation, and support. We are not liable for indirect losses arising from misunderstandings or disputes between users.' }}</p>
+    </div>
+</section>
+{% endblock %}

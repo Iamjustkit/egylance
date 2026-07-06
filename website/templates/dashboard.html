@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="dashboard-shell">
+    <div class="dashboard-card">
+        <h2>{{ 'مرحبا بك،' if lang == 'ar' else 'Welcome,' }} {{ user.full_name or user.username }}</h2>
+        <p>{{ 'إليك نظرة سريعة على نشاطك ومعلوماتك.' if lang == 'ar' else 'Here is a quick overview of your activity and profile.' }}</p>
+        <div class="dashboard-grid">
+            <div class="info-card">
+                <h3>{{ 'الحالة' if lang == 'ar' else 'Status' }}</h3>
+                <p>{{ 'موثق' if user.is_verified else 'قيد المراجعة' }}</p>
+                {% if profile and profile.is_featured %}<span class="pill">{{ 'مميز' if lang == 'ar' else 'Featured' }}</span>{% endif %}
+            </div>
+            <div class="info-card">
+                <h3>{{ 'الدور' if lang == 'ar' else 'Role' }}</h3>
+                <p>{{ user.role }}</p>
+            </div>
+            <div class="info-card">
+                <h3>{{ 'الملف الشخصي' if lang == 'ar' else 'Profile' }}</h3>
+                <p><a href="{{ url_for('views.profile') }}">{{ 'تعديل الملف' if lang == 'ar' else 'Edit profile' }}</a></p>
+            </div>
+            <div class="info-card">
+                <h3>{{ 'تحقق الهوية' if lang == 'ar' else 'Identity verification' }}</h3>
+                <p><a href="{{ url_for('views.verify') }}">{{ 'إرسال طلب تحقق' if lang == 'ar' else 'Submit verification' }}</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-card">
+        {% if user.role == 'freelancer' %}
+        <h3>{{ 'نشر خدمة جديدة' if lang == 'ar' else 'Post a new service' }}</h3>
+        <form method="post" action="{{ url_for('views.jobs') }}">
+            <input type="text" name="title" placeholder="{{ 'عنوان الخدمة' if lang == 'ar' else 'Service title' }}" required>
+            <textarea name="description" placeholder="{{ 'وصف الخدمة' if lang == 'ar' else 'Service description' }}" required></textarea>
+            <input type="text" name="category" placeholder="{{ 'الفئة' if lang == 'ar' else 'Category' }}" required>
+            <input type="text" name="budget" placeholder="{{ 'السعر أو الميزانية' if lang == 'ar' else 'Price or budget' }}">
+            <button type="submit" class="btn btn-primary">{{ 'نشر الخدمة' if lang == 'ar' else 'Publish service' }}</button>
+        </form>
+        {% endif %}
+
+        {% if user.role == 'freelancer' %}
+        <h3>{{ 'خدماتي' if lang == 'ar' else 'My services' }}</h3>
+        {% for job in user_jobs %}
+        <div class="request-item">
+            <div>
+                <strong>{{ job.title }}</strong>
+                <p>{{ job.description }}</p>
+                <small>{{ job.category }} · {{ job.budget or 'TBD' }}</small>
+            </div>
+            <a class="btn btn-light" href="{{ url_for('views.job_detail', job_id=job.id) }}">{{ 'فتح' if lang == 'ar' else 'Open' }}</a>
+        </div>
+        {% else %}
+        <p>{{ 'لم تنشر أي خدمات بعد.' if lang == 'ar' else 'You have not posted any services yet.' }}</p>
+        {% endfor %}
+        {% endif %}
+
+        <h3>{{ 'طلبات التحقق' if lang == 'ar' else 'Verification requests' }}</h3>
+        {% for req in requests %}
+            <div class="request-item">
+                <strong>{{ req.document_type }}</strong>
+                <span>{{ req.status }}</span>
+            </div>
+        {% else %}
+            <p>{{ 'لا توجد طلبات بعد.' if lang == 'ar' else 'No requests yet.' }}</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

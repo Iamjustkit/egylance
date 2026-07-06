@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="form-shell">
+    <form class="auth-card" method="post" enctype="multipart/form-data">
+        <h2>{{ 'تحقق الهوية' if lang == 'ar' else 'Identity verification' }}</h2>
+        <label>{{ 'نوع الوثيقة' if lang == 'ar' else 'Document type' }}</label>
+        <select name="document_type">
+            <option value="national_id">{{ 'بطاقة قومية' if lang == 'ar' else 'National ID' }}</option>
+            <option value="passport">{{ 'جواز سفر' if lang == 'ar' else 'Passport' }}</option>
+            <option value="license">{{ 'رخصة مهنية' if lang == 'ar' else 'Professional license' }}</option>
+        </select>
+        <label>{{ 'إرفاق ملفات' if lang == 'ar' else 'Attach documents' }}</label>
+        <input type="file" name="document" accept="image/*,.pdf" multiple>
+        <label>{{ 'ملاحظات' if lang == 'ar' else 'Notes' }}</label>
+        <textarea name="notes"></textarea>
+        <button type="submit" class="btn btn-primary">{{ 'إرسال الطلب' if lang == 'ar' else 'Submit request' }}</button>
+    </form>
+</section>
+{% endblock %}

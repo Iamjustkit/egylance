@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="form-shell">
+    <form class="auth-card" method="post">
+        <h2>{{ 'تسجيل الدخول' if lang == 'ar' else 'Login' }}</h2>
+        <label>{{ 'اسم المستخدم أو البريد الإلكتروني' if lang == 'ar' else 'Username or email' }}</label>
+        <input type="text" name="identifier" required>
+        <label>{{ 'كلمة المرور' if lang == 'ar' else 'Password' }}</label>
+        <input type="password" name="password" required>
+        <button type="submit" class="btn btn-primary">{{ 'تسجيل الدخول' if lang == 'ar' else 'Login' }}</button>
+        <p class="muted"><a href="{{ url_for('auth.signup') }}">{{ 'إنشاء حساب جديد' if lang == 'ar' else 'Create a new account' }}</a></p>
+    </form>
+</section>
+{% endblock %}

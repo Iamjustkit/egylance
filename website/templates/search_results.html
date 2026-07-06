@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="dashboard-shell">
+    <div class="dashboard-card">
+        <h2>{{ 'نتائج البحث' if lang == 'ar' else 'Search results' }}</h2>
+        {% if query %}
+        <p>{{ 'تم البحث عن' if lang == 'ar' else 'Showing results for' }}: <strong>{{ query }}</strong></p>
+        {% endif %}
+        {% for job in jobs %}
+        <div class="request-item">
+            <div>
+                <strong>{{ job.title }}</strong>
+                <p>{{ job.description }}</p>
+            </div>
+        </div>
+        {% else %}
+        <p>{{ 'لا توجد نتائج' if lang == 'ar' else 'No results found' }}</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

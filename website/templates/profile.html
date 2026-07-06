@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="dashboard-shell">
+    <div class="dashboard-card">
+        <h2>{{ 'ملف المستخدم' if lang == 'ar' else 'User profile' }}</h2>
+        <p><strong>{{ 'الاسم' if lang == 'ar' else 'Name' }}:</strong> {{ user.full_name or user.username }}</p>
+        <p><strong>{{ 'العنوان' if lang == 'ar' else 'Headline' }}:</strong> {{ profile.headline_ar if lang == 'ar' else profile.headline_en }}</p>
+        <p><strong>{{ 'السيرة' if lang == 'ar' else 'Bio' }}:</strong> {{ profile.bio_ar if lang == 'ar' else profile.bio_en }}</p>
+        <p><strong>{{ 'المهارات' if lang == 'ar' else 'Skills' }}:</strong> {{ profile.skills_ar if lang == 'ar' else profile.skills_en }}</p>
+        <p><strong>{{ 'المدينة' if lang == 'ar' else 'City' }}:</strong> {{ profile.city }}</p>
+        <p><strong>{{ 'الراتب/الساعة' if lang == 'ar' else 'Hourly rate' }}:</strong> {{ profile.hourly_rate }}</p>
+        <p><strong>{{ 'رقم الهاتف' if lang == 'ar' else 'Phone' }}:</strong> {{ profile.phone or '—' }}</p>
+        <p><strong>{{ 'الموقع الإلكتروني' if lang == 'ar' else 'Website' }}:</strong> {{ profile.website or '—' }}</p>
+        <p><strong>{{ 'التوافر' if lang == 'ar' else 'Availability' }}:</strong> {{ profile.availability or '—' }}</p>
+        {% if not public_view %}
+        <a class="btn btn-primary" href="{{ url_for('views.edit_profile') }}">{{ 'تعديل الملف' if lang == 'ar' else 'Edit profile' }}</a>
+        <form method="post" action="{{ url_for('views.request_account_deletion') }}" style="margin-top: 12px;">
+            <button class="btn btn-light" type="submit">{{ 'طلب حذف الحساب' if lang == 'ar' else 'Request account deletion' }}</button>
+        </form>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

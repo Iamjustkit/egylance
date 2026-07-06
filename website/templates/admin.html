@@ -1,0 +1,92 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="dashboard-shell">
+    <div class="dashboard-card">
+        <h2>{{ 'لوحة الإدارة' if lang == 'ar' else 'Admin panel' }}</h2>
+        <h3>{{ 'التحقق من الهوية' if lang == 'ar' else 'Identity verification' }}</h3>
+        {% for req in verification_requests %}
+        <div class="request-item">
+            <div>
+                <strong>{{ req.full_name or req.username }}</strong>
+                <p>{{ req.document_type }} — {{ req.status }}</p>
+                {% if verification_files.get(req.id) %}
+                <div class="verification-gallery">
+                    {% for file in verification_files[req.id] %}
+                    <img src="{{ file.file_path }}" alt="verification" class="verification-preview">
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% if req.status == 'pending' %}
+            <form method="post" action="{{ url_for('views.review_verification', request_id=req.id, status='approved') }}">
+                <input type="text" name="admin_notes" placeholder="{{ 'ملاحظات' if lang == 'ar' else 'Notes' }}">
+                <button type="submit" class="btn btn-primary">{{ 'قبول' if lang == 'ar' else 'Approve' }}</button>
+            </form>
+            <form method="post" action="{{ url_for('views.review_verification', request_id=req.id, status='rejected') }}">
+                <input type="text" name="admin_notes" placeholder="{{ 'ملاحظات' if lang == 'ar' else 'Notes' }}">
+                <button type="submit" class="btn btn-light">{{ 'رفض' if lang == 'ar' else 'Reject' }}</button>
+            </form>
+            {% else %}
+            <p class="muted">{{ 'تمت المراجعة' if lang == 'ar' else 'Reviewed' }}</p>
+            {% endif %}
+        </div>
+        {% else %}
+        <p>{{ 'لا توجد طلبات تحقق.' if lang == 'ar' else 'No verification requests.' }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="dashboard-card">
+        <h3>{{ 'إدارة المستخدمين' if lang == 'ar' else 'Manage users' }}</h3>
+        {% for user_item in users %}
+        <div class="request-item">
+            <div>
+                <strong>{{ user_item.full_name or user_item.username }}</strong>
+                <p>{{ user_item.email }} · {{ user_item.role }} · {{ 'محظور' if user_item.is_banned else 'نشط' }}</p>
+            </div>
+            <div class="admin-actions">
+                <form method="post" action="{{ url_for('views.admin_user_action', user_id=user_item.id, action='ban') }}">
+                    <button type="submit" class="btn btn-light">{{ 'حظر' if lang == 'ar' else 'Ban' }}</button>
+                </form>
+                <form method="post" action="{{ url_for('views.admin_user_action', user_id=user_item.id, action='unban') }}">
+                    <button type="submit" class="btn btn-primary">{{ 'إلغاء الحظر' if lang == 'ar' else 'Unban' }}</button>
+                </form>
+                <form method="post" action="{{ url_for('views.admin_user_action', user_id=user_item.id, action='delete') }}">
+                    <button type="submit" class="btn btn-light">{{ 'حذف' if lang == 'ar' else 'Delete' }}</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+
+        <h3>{{ 'إدارة المنشورات' if lang == 'ar' else 'Manage posts' }}</h3>
+        {% for job_item in jobs %}
+        <div class="request-item">
+            <div>
+                <strong>{{ job_item.title }}</strong>
+                <p>{{ job_item.description }}</p>
+            </div>
+            <form method="post" action="{{ url_for('views.delete_job_admin', job_id=job_item.id) }}">
+                <button type="submit" class="btn btn-light">{{ 'حذف' if lang == 'ar' else 'Delete' }}</button>
+            </form>
+        </div>
+        {% endfor %}
+
+        <h3>{{ 'إدارة البطاقات' if lang == 'ar' else 'Manage cards' }}</h3>
+        <form method="post" action="{{ url_for('views.create_admin_card') }}">
+            <input type="text" name="section" placeholder="services or why" required>
+            <input type="text" name="title_ar" placeholder="{{ 'العنوان بالعربية' if lang == 'ar' else 'Title in Arabic' }}" required>
+            <input type="text" name="title_en" placeholder="{{ 'Title in English' }}" required>
+            <textarea name="body_ar" placeholder="{{ 'المحتوى بالعربية' if lang == 'ar' else 'Body in Arabic' }}" required></textarea>
+            <textarea name="body_en" placeholder="{{ 'Body in English' }}" required></textarea>
+            <input type="text" name="icon" placeholder="icon">
+            <button type="submit" class="btn btn-primary">{{ 'إضافة' if lang == 'ar' else 'Add' }}</button>
+        </form>
+        <h4>{{ 'البطاقات الحالية' if lang == 'ar' else 'Current cards' }}</h4>
+        {% for card in site_cards %}
+        <div class="request-item">
+            <strong>{{ card.title_ar if lang == 'ar' else card.title_en }}</strong>
+            <span>{{ card.section }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

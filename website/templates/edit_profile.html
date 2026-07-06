@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="form-shell">
+    <form class="auth-card" method="post">
+        <h2>{{ 'تعديل الملف الشخصي' if lang == 'ar' else 'Edit profile' }}</h2>
+        <label>{{ 'الاسم الكامل' if lang == 'ar' else 'Full name' }}</label>
+        <input type="text" name="full_name" value="{{ user.full_name or '' }}">
+        <label>{{ 'العنوان بالعربية' if lang == 'ar' else 'Headline in Arabic' }}</label>
+        <input type="text" name="headline_ar" value="{{ profile.headline_ar or '' }}">
+        <label>{{ 'Headline in English' }}</label>
+        <input type="text" name="headline_en" value="{{ profile.headline_en or '' }}">
+        <label>{{ 'السيرة بالعربية' if lang == 'ar' else 'Bio in Arabic' }}</label>
+        <textarea name="bio_ar">{{ profile.bio_ar or '' }}</textarea>
+        <label>{{ 'Bio in English' }}</label>
+        <textarea name="bio_en">{{ profile.bio_en or '' }}</textarea>
+        <label>{{ 'المهارات بالعربية' if lang == 'ar' else 'Skills in Arabic' }}</label>
+        <input type="text" name="skills_ar" value="{{ profile.skills_ar or '' }}">
+        <label>{{ 'Skills in English' }}</label>
+        <input type="text" name="skills_en" value="{{ profile.skills_en or '' }}">
+        <label>{{ 'المدينة' if lang == 'ar' else 'City' }}</label>
+        <input type="text" name="city" value="{{ profile.city or '' }}">
+        <label>{{ 'الدولة' if lang == 'ar' else 'Country' }}</label>
+        <input type="text" name="country" value="{{ profile.country or '' }}">
+        <label>{{ 'الراتب/الساعة' if lang == 'ar' else 'Hourly rate' }}</label>
+        <input type="text" name="hourly_rate" value="{{ profile.hourly_rate or '' }}">
+        <label>{{ 'الموقع الإلكتروني' if lang == 'ar' else 'Website' }}</label>
+        <input type="text" name="website" value="{{ profile.website or '' }}">
+        <label>{{ 'التوافر' if lang == 'ar' else 'Availability' }}</label>
+        <input type="text" name="availability" value="{{ profile.availability or '' }}">
+        <label>{{ 'رقم الهاتف' if lang == 'ar' else 'Phone number' }}</label>
+        <input type="text" name="phone" value="{{ profile.phone or '' }}">
+        <button type="submit" class="btn btn-primary">{{ 'حفظ' if lang == 'ar' else 'Save' }}</button>
+    </form>
+</section>
+{% endblock %}

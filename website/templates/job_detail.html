@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section class="dashboard-shell">
+    <div class="dashboard-card">
+        <h2>{{ job.title }}</h2>
+        <p>{{ job.description }}</p>
+        <div class="muted">{{ job.category }} · {{ job.budget or 'TBD' }} · {{ 'مشاهدات' if lang == 'ar' else 'views' }}: {{ job.views_count or 0 }}</div>
+        <div class="muted">{{ 'Posted by' if lang != 'ar' else 'تم النشر بواسطة' }} {{ job.full_name or job.username }}</div>
+        <hr>
+        <h3>{{ 'Conversation' if lang != 'ar' else 'المحادثة' }}</h3>
+        <div class="chat-box">
+            {% for message in messages %}
+            <div class="chat-message">
+                <strong>{{ message.full_name or message.username or 'User' }}</strong>
+                <p>{{ message.body }}</p>
+            </div>
+            {% else %}
+            <p class="muted">{{ 'No messages yet.' if lang != 'ar' else 'لا توجد رسائل بعد.' }}</p>
+            {% endfor %}
+        </div>
+        <form method="post" class="chat-form">
+            <textarea name="message" placeholder="{{ 'Write a message...' if lang != 'ar' else 'اكتب رسالة...' }}" required></textarea>
+            <button type="submit" class="btn btn-primary">{{ 'Send' if lang != 'ar' else 'إرسال' }}</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
