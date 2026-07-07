@@ -43,7 +43,8 @@ def logout():
 
 @auth.route('/auth/google')
 def google_auth():
-    flash('Google sign-in will be enabled once Google OAuth credentials are configured.', 'info')
+    from . import oauth
+    google = oauth.create_client('google')
     return redirect(url_for('auth.signup'))
 
 
