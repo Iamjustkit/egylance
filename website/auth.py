@@ -41,11 +41,13 @@ def logout():
     return redirect(url_for('views.home'))
 
 
-@auth.route('/auth/google')
+@auth.route("/auth/google")
 def google_auth():
     from . import oauth
-    google = oauth.create_client('google')
-    return redirect(url_for('auth.signup'))
+
+    google = oauth.create_client("google")
+    redirect_uri = url_for("auth.google_callback", _external=True)
+    return google.authorize_redirect(redirect_uri)
 
 
 @auth.route('/signup', methods=['GET', 'POST'])
