@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 from .i18n import get_lang, get_translations
 from .models import authenticate_user, create_user
-
+import os
 auth = Blueprint('auth', __name__)
 
 
@@ -40,7 +40,6 @@ def logout():
     flash('You have been logged out.', 'success')
     return redirect(url_for('views.home'))
 
-
 @auth.route("/auth/google")
 def google_auth():
     from . import oauth
@@ -49,6 +48,52 @@ def google_auth():
     redirect_uri = url_for("auth.google_callback", _external=True)
     return google.authorize_redirect(redirect_uri)
 
+@auth.route("/auth/google/callback")
+def google_callback():
+    from . import oauth
+    from .models import get_user_by_email, create_user
+
+    google = oauth.create_client("google")
+
+    token = google.authorize_access_token()
+
+    user_info = token.get("userinfo")
+    if user_info is None:
+        user_info = google.userinfo()
+
+    email = user_info["email"]
+    full_name = user_info.get("name", "")
+    google_id = user_info.get("sub")
+    username = email.split("@")[0]
+
+    user = get_user_by_email(email)
+
+    if user is None:
+        base_username = username
+        i = 1
+
+        while get_user_by_email(f"{base_username}{i}@temp.local"):
+            i += 1
+
+        user_id = create_user(
+            username=username,
+            email=email,
+            password=os.urandom(32).hex(),
+            role="freelancer",
+            full_name=full_name,
+            google_id=google_id,
+            email_verified=1,
+        )
+
+        session["user_id"] = user_id
+        session["lang"] = "ar"
+
+    else:
+        session["user_id"] = user["id"]
+        session["lang"] = user["language"]
+
+    flash("Signed in with Google successfully.", "success")
+    return redirect(url_for("views.dashboard"))
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():

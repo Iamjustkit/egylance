@@ -178,6 +178,12 @@ def get_user_by_id(user_id):
     with get_db() as conn:
         return conn.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
 
+def get_user_by_email(email):
+    with get_db() as conn:
+        return conn.execute(
+            'SELECT * FROM users WHERE email = ?',
+            (email,)
+        ).fetchone()
 
 def get_all_users():
     with get_db() as conn:
