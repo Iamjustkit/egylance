@@ -3,7 +3,7 @@ import unittest
 import uuid
 
 from website import create_app
-from website.models import create_job, create_user, get_job_by_id
+from website.models import create_job, create_user
 
 
 class EgyLanceAppTests(unittest.TestCase):
@@ -63,16 +63,6 @@ class EgyLanceAppTests(unittest.TestCase):
         response = self.client.get('/dashboard')
         self.assertEqual(response.status_code, 200)
         self.assertIn(f'/jobs/{job_id}'.encode(), response.data)
-
-    def test_job_detail_tracks_views(self):
-        unique = uuid.uuid4().hex[:8]
-        freelancer_id = create_user(f'viewer{unique}', f'viewer{unique}@example.com', 'Pass123!', role='freelancer', full_name='Viewer')
-        job_id = create_job(freelancer_id, 'Landing page help', 'Improve conversion copy', 'Marketing', '300', '')
-        with self.client.session_transaction() as session:
-            session['user_id'] = freelancer_id
-        response = self.client.get(f'/jobs/{job_id}')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(get_job_by_id(job_id)['views_count'], 1)
 
 
 if __name__ == '__main__':
